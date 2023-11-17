@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Pricing</title>
+    <style>
+        /* Your styling goes here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            display: inline-block;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="subscriptionForm" action="http://localhost:3000/handle_subscription" method="post">
+        <h2>Choose the Right Plan for You</h2>
+
+        <label for="subscription">Subscription:</label>
+        <select id="subscription" name="subscription">
+            <option value="monthly" selected>Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+
+        <label for="price">Monthly Price:</label>
+        <input type="text" id="price" name="price" value="$9.99" readonly>
+
+        <label for="video-quality">Video Quality:</label>
+        <input type="text" id="video-quality" name="video-quality" value="HD" readonly>
+
+        <label for="resolution">Resolution:</label>
+        <input type="text" id="resolution" name="resolution" value="1080p" readonly>
+
+        <p>Devices you can use to watch:</p>
+        <div>
+            <label><input type="checkbox" disabled checked> Mobile</label>
+            <label><input type="checkbox" disabled checked> Basic</label>
+            <label><input type="checkbox" disabled> Standard</label>
+            <label><input type="checkbox" disabled> Premium</label>
+        </div>
+
+        <button type="button" onclick="handleSubscription()">Next</button>
+    </form>
+
+    <script>
+        function handleSubscription() {
+            const subscription = document.getElementById("subscription").value;
+
+            fetch('http://localhost:3000/handle_subscription', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ subscription }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>
